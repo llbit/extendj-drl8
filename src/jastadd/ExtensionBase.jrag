@@ -1,0 +1,16 @@
+aspect ExtensionBase {
+
+    public void CompilationUnit.process() {
+        System.out.println(pathName() + " contained no errors");
+        for (TypeDecl type : getTypeDecls()) {
+            System.out.println("found class: " + type.getID());
+            if (type instanceof ClassDecl) {
+                for (BodyDecl body : ((ClassDecl)type).getBodyDecls()) {
+                    if (body instanceof RuleDecl) {
+                        System.out.println("found rule: " + ((RuleDecl)body).getID());
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,23 @@
+# Gradle files.
+/.gradle/
+/build/
+
+# Eclipse, Netbeans and IntelliJ files
+/.*
+!.gitignore
+/nbproject
+/*.ipr
+/*.iws
+/*.iml
+
+# Generated files
+/src/gen/
+/src/gen-res/
+/*.jar
+/*.zip
+
+# Vim swap files.
+*.swp
+
+# Jar file
+*.jar

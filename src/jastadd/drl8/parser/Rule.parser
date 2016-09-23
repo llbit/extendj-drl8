@@ -1,0 +1,19 @@
+MemberDecl class_member_declaration = rule_declaration;
+
+RuleDecl rule_declaration =
+  modifiers.m? RULE IDENTIFIER.id when? {: return new RuleDecl(new Modifiers(m), id, when); :}
+  ;
+
+WhenDecl when =
+    WHEN LBRACE RBRACE {: return new WhenDecl(new List()); :}
+  | WHEN LBRACE patterns RBRACE {: return new WhenDecl(patterns); :}
+  ;
+
+List patterns =
+    pattern {: return new List().add(pattern); :}
+  | patterns pattern {: return patterns.add(pattern); :}
+  ;
+
+PatternDecl pattern =
+    IDENTIFIER.id UNIF expression SEMICOLON {: return new PatternDecl(id, expression); :}
+  ;

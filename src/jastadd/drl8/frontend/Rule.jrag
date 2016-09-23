@@ -1,0 +1,3 @@
+aspect Rule {
+  syn boolean RuleDecl.isStatic() = true;
+}

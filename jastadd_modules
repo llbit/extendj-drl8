@@ -1,0 +1,27 @@
+include("extendj/jastadd_modules") // Include the core ExtendJ modules.
+
+module "drl8", {
+
+	imports "java8 frontend"
+
+	java {
+		basedir "src/java/"
+		include "**/*.java"
+	}
+
+	jastadd {
+		basedir "src/jastadd/"
+		include "**/*.ast"
+		include "**/*.jadd"
+		include "**/*.jrag"
+	}
+
+	scanner {
+		include "src/jastadd/drl8/scanner/*.flex"
+	}
+
+	parser {
+		include "src/jastadd/drl8/parser/*.parser"
+	}
+}
+

@@ -1,0 +1,5 @@
+RuleDecl : MemberDecl ::= Modifiers <ID:String> [WhenDecl];
+
+WhenDecl ::= PatternDecl*;
+
+PatternDecl ::= <Bind:String> Result:Expr;
