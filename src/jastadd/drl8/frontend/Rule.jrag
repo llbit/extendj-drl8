@@ -1,3 +1,20 @@
 aspect Rule {
   syn boolean RuleDecl.isStatic() = false;
+
+  eq RuleDecl.getChild().reachable() = true;
+
+  eq PatternDecl.getTypeAccess().nameType() = NameType.TYPE_NAME;
+
+  eq ThenDecl.getBlock().lookupVariable(String name) {
+    RuleDecl rule = (RuleDecl) getParent().getParent();
+    if (rule.hasWhenDecl()) {
+      for (PatternDecl pattern : rule.getWhenDecl().getPatternDeclList()) {
+        if (name.equals(pattern.getBind())) {
+          return new ParameterDeclaration(pattern.getTypeAccess(), name);
+        }
+      }
+    }
+    return emptySet();
+  }
 }
+

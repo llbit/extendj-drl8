@@ -30,16 +30,15 @@
  */
 package org.extendj;
 
-import java.io.File;
-import java.util.Collection;
-
 import org.extendj.ast.CompilationUnit;
 import org.extendj.ast.Frontend;
 import org.extendj.ast.Problem;
 import org.extendj.ast.Program;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.util.Collection;
 
 /**
  * Compile Java programs.
@@ -140,7 +139,7 @@ public class JavaCompiler extends Frontend {
   protected void processNoErrors(CompilationUnit unit) {
     switch (mode) {
       case COMPILE:
-        unit.generateClassfile();
+//        unit.generateClassfile();
         return;
       case PRETTY_PRINT:
         try {

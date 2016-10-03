@@ -32,9 +32,8 @@ package org.extendj.ast;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Map;
 import java.util.HashMap;
-import java.util.Iterator;
+import java.util.Map;
 
 /**
  * Helper class to generate bytecode instructions.
