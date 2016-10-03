@@ -1,7 +1,7 @@
 MemberDecl class_member_declaration = rule_declaration;
 
 RuleDecl rule_declaration =
-  modifiers.m? RULE IDENTIFIER.id when? {: return new RuleDecl(new Modifiers(m), id, when); :}
+  modifiers.m? RULE IDENTIFIER.id LBRACE when? then? RBRACE {: return new RuleDecl(new Modifiers(m), id, when, then); :}
   ;
 
 WhenDecl when =
@@ -15,5 +15,10 @@ List patterns =
   ;
 
 PatternDecl pattern =
-    IDENTIFIER.id UNIF expression SEMICOLON {: return new PatternDecl(id, expression); :}
+    type.t IDENTIFIER.id UNIF expression SEMICOLON {: return new PatternDecl(t, id, expression); :}
   ;
+
+ThenDecl then =
+    THEN block {: return new ThenDecl(block); :}
+  ;
+

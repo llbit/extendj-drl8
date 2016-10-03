@@ -1,5 +1,16 @@
+package org.drl8.test;
+
+import java.util.List;
+
 public class Unit {
-    public class Person {
+
+    private final List<Person> data;
+
+    public Unit(List<Person> data) {
+        this.data = data;
+    }
+
+    public static class Person {
         private final String name;
         private final int age;
 
@@ -19,7 +30,7 @@ public class Unit {
 
     rule Adult {
         when {
-            Person p := /data{ #Person, age > 18 }
+            Person p := Unit.this.data.get(0);
         } then {
             System.out.println(p.getName());
         }

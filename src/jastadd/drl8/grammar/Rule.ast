@@ -1,5 +1,7 @@
-RuleDecl : MemberDecl ::= Modifiers <ID:String> [WhenDecl];
+RuleDecl : MemberDecl ::= Modifiers <ID:String> [WhenDecl] [ThenDecl];
 
 WhenDecl ::= PatternDecl*;
 
-PatternDecl ::= <Bind:String> Result:Expr;
+PatternDecl ::= TypeAccess:Access <Bind:String> Result:Expr;
+
+ThenDecl ::= Block;
