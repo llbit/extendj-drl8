@@ -10,7 +10,9 @@ aspect Rule {
     if (rule.hasWhenDecl()) {
       for (PatternDecl pattern : rule.getWhenDecl().getPatternDeclList()) {
         if (name.equals(pattern.getBind())) {
-          return new ParameterDeclaration(pattern.getTypeAccess(), name);
+          ParameterDeclaration param = new ParameterDeclaration(pattern.getTypeAccess(), name);
+          param.setParent(this);
+          return param;
         }
       }
     }
