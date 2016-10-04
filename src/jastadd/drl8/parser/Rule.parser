@@ -19,6 +19,6 @@ PatternDecl pattern =
   ;
 
 ThenDecl then =
-    THEN block {: return new ThenDecl(block); :}
+    THEN block {: return new ThenDecl(new List(), block); :}
   ;
 

@@ -4,4 +4,4 @@ WhenDecl ::= PatternDecl*;
 
 PatternDecl ::= TypeAccess:Access <Bind:String> Result:Expr;
 
-ThenDecl ::= Block;
+ThenDecl ::= ParameterDeclaration* Block;

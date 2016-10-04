@@ -139,7 +139,7 @@ public class JavaCompiler extends Frontend {
   protected void processNoErrors(CompilationUnit unit) {
     switch (mode) {
       case COMPILE:
-//        unit.generateClassfile();
+        unit.generateClassfile();
         return;
       case PRETTY_PRINT:
         try {

@@ -3,6 +3,7 @@ include("extendj/jastadd_modules") // Include the core ExtendJ modules.
 module "drl8", {
 
 	imports "java8 frontend"
+	imports "java8 backend"
 
 	java {
 		basedir "src/java/"

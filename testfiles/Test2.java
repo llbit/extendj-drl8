@@ -24,6 +24,7 @@ public class Unit {
         }
 
         public int getAge() {
+            data.get(0);
             return age;
         }
     }

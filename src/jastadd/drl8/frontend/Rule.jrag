@@ -5,18 +5,46 @@ aspect Rule {
 
   eq PatternDecl.getTypeAccess().nameType() = NameType.TYPE_NAME;
 
+  syn Access WhenDecl.getParamType(String name) {
+    for (PatternDecl pattern : getPatternDeclList()) {
+      if (name.equals(pattern.getBind())) {
+        return pattern.getTypeAccess();
+      }
+    }
+    return null;
+  }
+
   eq ThenDecl.getBlock().lookupVariable(String name) {
+    for (ParameterDeclaration param : getParameterDeclarations()) {
+      if (name.equals(param.getID())) {
+        return param;
+      }
+    }
     RuleDecl rule = (RuleDecl) getParent().getParent();
     if (rule.hasWhenDecl()) {
-      for (PatternDecl pattern : rule.getWhenDecl().getPatternDeclList()) {
-        if (name.equals(pattern.getBind())) {
-          ParameterDeclaration param = new ParameterDeclaration(pattern.getTypeAccess(), name);
+      Access paramType = rule.getWhenDecl().getParamType(name);
+      if (paramType != null) {
+          ParameterDeclaration param = new ParameterDeclaration(paramType, name);
           param.setParent(this);
+          getParameterDeclarations().add(param);
           return param;
-        }
       }
     }
     return emptySet();
+  }
+
+  syn java.util.List<RuleDecl> CompilationUnit.getRules() {
+    java.util.List<RuleDecl> rules = new java.util.ArrayList<RuleDecl>();
+    for (TypeDecl type : getTypeDecls()) {
+      if (type instanceof ClassDecl) {
+        for (BodyDecl body : ((ClassDecl)type).getBodyDecls()) {
+          if (body instanceof RuleDecl) {
+            rules.add((RuleDecl)body);
+          }
+        }
+      }
+    }
+    return rules;
   }
 }
 
