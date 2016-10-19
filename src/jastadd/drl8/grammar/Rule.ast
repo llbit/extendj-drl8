@@ -2,6 +2,14 @@ RuleDecl : MemberDecl ::= Modifiers <ID:String> [WhenDecl] [ThenDecl];
 
 WhenDecl ::= PatternDecl*;
 
-PatternDecl ::= TypeAccess:Access <Bind:String> Result:Expr;
+PatternDecl ::= TypeAccess:Access <Bind:String> PatternExpr;
+
+PatternExpr ::= OOPathExpr;
+
+OOPathExpr ::= OOPathChunk*;
+
+OOPathChunk ::= <Var:String> Constraint*;
+
+Constraint ::= Expr;
 
 ThenDecl ::= ParameterDeclaration* Block;

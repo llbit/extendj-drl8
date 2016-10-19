@@ -5,6 +5,8 @@ aspect Rule {
 
   eq PatternDecl.getTypeAccess().nameType() = NameType.TYPE_NAME;
 
+  //eq Constraint.type() = typeBoolean();
+
   syn Access WhenDecl.getParamType(String name) {
     for (PatternDecl pattern : getPatternDeclList()) {
       if (name.equals(pattern.getBind())) {
@@ -46,5 +48,6 @@ aspect Rule {
     }
     return rules;
   }
+
 }
 

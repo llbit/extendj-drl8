@@ -15,7 +15,37 @@ List patterns =
   ;
 
 PatternDecl pattern =
-    type.t IDENTIFIER.id UNIF expression SEMICOLON {: return new PatternDecl(t, id, expression); :}
+    type.t IDENTIFIER.id UNIF patternExpr SEMICOLON {: return new PatternDecl(t, id, patternExpr); :}
+  ;
+
+PatternExpr patternExpr =
+    ooPathExpr {: return new PatternExpr(ooPathExpr); :}
+  ;
+
+OOPathExpr ooPathExpr =
+    ooPathChunks {: return new OOPathExpr(ooPathChunks); :}
+  ;
+
+List ooPathChunks =
+    ooPathChunk {: return new List().add(ooPathChunk); :}
+  | ooPathChunks ooPathChunk {: return ooPathChunks.add(ooPathChunk); :}
+  ;
+
+OOPathChunk ooPathChunk =
+    DIV IDENTIFIER.id ooPathConstraints? {: return new OOPathChunk(id, ooPathConstraints); :}
+  ;
+
+List ooPathConstraints =
+    LBRACE constraints RBRACE {: return constraints; :}
+  ;
+
+List constraints =
+    constraint {: return new List().add(constraint); :}
+  | constraints COMMA constraint {: return constraints.add(constraint); :}
+  ;
+  
+Constraint constraint =
+    expression {: return new Constraint(expression); :}
   ;
 
 ThenDecl then =

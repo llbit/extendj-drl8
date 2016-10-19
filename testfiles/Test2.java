@@ -24,14 +24,17 @@ public class Unit {
         }
 
         public int getAge() {
-            data.get(0);
             return age;
+        }
+
+        public boolean isAdult() {
+            return age > 18;
         }
     }
 
     rule Adult {
         when {
-            Person p := Unit.this.data.get(0);
+            Person p := /data{age > 18};
         } then {
             System.out.println(p.getName());
         }
