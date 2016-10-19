@@ -9,6 +9,8 @@ buildscript {
 apply plugin: 'java'
 apply plugin: 'jastadd'
 
+apply plugin: 'maven-publish'
+
 defaultTasks 'jar'
 
 if (!file('extendj/jastadd_modules').exists()) {
@@ -44,8 +46,8 @@ jar.manifest.attributes 'Main-Class': 'org.extendj.ExtensionMain'
 jar.destinationDir = projectDir
 
 // Java -source and -target version.
-sourceCompatibility = '1.7'
-targetCompatibility = '1.7'
+sourceCompatibility = '1.8'
+targetCompatibility = '1.8'
 
 task sourceZip(type: Zip) {
 	description 'Builds a Zip file with the entire repisotory (including the ExtendJ submodule).'
@@ -71,4 +73,16 @@ task sourceZip(type: Zip) {
 	}
 
 	into 'drl8'
+}
+
+publishing {
+	publications {
+		maven(MavenPublication) {
+			groupId 'org.drools'
+			artifactId 'drl8'
+			version '1.0.0-SNAPSHOT'
+
+			from components.java
+		}
+	}
 }
