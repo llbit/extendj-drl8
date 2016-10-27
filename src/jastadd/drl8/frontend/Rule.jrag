@@ -5,8 +5,6 @@ aspect Rule {
 
   eq PatternDecl.getTypeAccess().nameType() = NameType.TYPE_NAME;
 
-  //eq Constraint.type() = typeBoolean();
-
   syn Access WhenDecl.getParamType(String name) {
     for (PatternDecl pattern : getPatternDeclList()) {
       if (name.equals(pattern.getBind())) {
@@ -49,5 +47,43 @@ aspect Rule {
     return rules;
   }
 
+  /**
+   * Variable lookups inside a constraint delegate to the
+   * element type of the field which the path chunk refers to.
+   */
+  eq Constraint.getExpr().lookupVariable(String name) {
+    TypeDecl elementType = pathChunk().type().iterableElementType();
+    if (elementType.isUnknown()) {
+      // TODO: generate an error message instead.
+      throw new Error("Unknown element type for constraint.");
+    }
+    return elementType.memberFields(name);
+  }
+
+  inh SimpleSet<Variable> OOPathChunk.lookupVariable(String name);
+
+  syn TypeDecl OOPathChunk.type() {
+    SimpleSet<Variable> decl = lookupVariable(getVar());
+    if (decl.isSingleton()) {
+      return decl.singletonValue().type();
+    } else {
+      // TODO: generate an error message instead.
+      throw new Error("Found no matching field for name " + getVar());
+    }
+  }
+
+  inh OOPathChunk Constraint.pathChunk();
+
+  eq OOPathChunk.getChild().pathChunk() = this;
+
+  eq Program.getChild().pathChunk() {
+    throw new Error("Found no parent path chunk.");
+  }
+
+  /**
+   * All instance variables used in a rule are assigned before use.
+   */
+  eq RuleDecl.getChild().assignedBefore(Variable v) =
+      v.isField() ? true : assignedBefore(v);
 }
 

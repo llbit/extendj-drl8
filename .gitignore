@@ -15,6 +15,9 @@
 /src/gen-res/
 /*.jar
 /*.zip
+/classes
+/testfiles/classes
+/*.class
 
 # Vim swap files.
 *.swp
