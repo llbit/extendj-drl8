@@ -12,11 +12,11 @@ public class Unit {
 
     public static class Person {
         private final String name;
-        private final int age;
+        private final int myAge;
 
         public Person(String name, int age) {
             this.name = name;
-            this.age = age;
+            this.myAge = age;
         }
 
         public String getName() {
@@ -24,11 +24,7 @@ public class Unit {
         }
 
         public int getAge() {
-            return age;
-        }
-
-        public boolean isAdult() {
-            return age > 18;
+            return myAge;
         }
     }
 

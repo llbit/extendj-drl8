@@ -57,6 +57,18 @@ aspect Rule {
       // TODO: generate an error message instead.
       throw new Error("Unknown element type for constraint.");
     }
+    String getter = "get" + name.substring( 0,1 ).toUpperCase() + name.substring( 1 );
+    for (BodyDecl body : elementType.getBodyDeclList()) {
+      if (body instanceof MethodDecl) {
+        MethodDecl method = (MethodDecl) body;
+        if ( method.getID().equals( getter ) ) {
+          FieldDeclarator field = new FieldDeclarator( getter, new List(), new Opt() );
+          FieldDecl fieldDecl = new FieldDecl(new Modifiers(), method.getTypeAccess(), new List<FieldDeclarator>().add(field));
+          elementType.getBodyDeclList().add( fieldDecl );
+          return field;
+        }
+      }
+    }
     return elementType.memberFields(name);
   }
 
