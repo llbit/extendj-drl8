@@ -57,20 +57,49 @@ aspect Rule {
       // TODO: generate an error message instead.
       throw new Error("Unknown element type for constraint.");
     }
+    SimpleSet<Variable> accessor = elementType.propertyFieldReference(name);
+    if (!accessor.isEmpty()) {
+      return accessor;
+    } else {
+      return elementType.memberFields(name);
+    }
+  }
+
+  /**
+   * If there is a method matching the given property name, then
+   * this returns a collection containing a synthetic field reference
+   * which is a child of the getter method for the given property.
+   *
+   * <p>For example, if this attribute is evaluated with name="age",
+   * and there exists a method getAge in this type, then a singleton
+   * collection containing the method getAge's synthetic propertyVariable()
+   * is returned.
+   */
+  syn SimpleSet<Variable> TypeDecl.propertyFieldReference(String name) {
     String getter = "get" + name.substring( 0,1 ).toUpperCase() + name.substring( 1 );
-    for (BodyDecl body : elementType.getBodyDeclList()) {
-      if (body instanceof MethodDecl) {
-        MethodDecl method = (MethodDecl) body;
-        if ( method.getID().equals( getter ) ) {
-          FieldDeclarator field = new FieldDeclarator( getter, new List(), new Opt() );
-          FieldDecl fieldDecl = new FieldDecl(new Modifiers(), method.getTypeAccess(), new List<FieldDeclarator>().add(field));
-          elementType.getBodyDeclList().add( fieldDecl );
-          return field;
-        }
+    Collection<MethodDecl> candidates = memberMethods(getter);
+    Collection<MethodDecl> matching = new ArrayList<>();
+    for (MethodDecl candidate : candidates) {
+      if (candidate.isPublic() && candidate.getNumParameter() == 0) {
+        matching.add(candidate);
       }
     }
-    return elementType.memberFields(name);
+    if (matching.isEmpty()) {
+      return emptySet();
+    }
+    if (matching.size() > 1) {
+      // TODO: generate a compile error for this case.
+    }
+    // This uses the first public method with the expected getter name and zero parameters.
+    MethodDecl method = matching.iterator().next();
+    return ASTNode.<Variable>emptySet().add(method.propertyVariable().getDeclarator(0));
   }
+
+  syn nta FieldDecl MethodDecl.propertyVariable() =
+    new FieldDecl(new Modifiers(new List<>(new Modifier("public"))),
+        getTypeAccess().treeCopy(),
+        new List<>(new FieldDeclarator(getID().substring(3, 4).toUpperCase() + getID().substring(3),
+          new List<>(), new Opt<>())));
 
   inh SimpleSet<Variable> OOPathChunk.lookupVariable(String name);
 
